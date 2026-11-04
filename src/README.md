@@ -1,4 +1,14 @@
-# Offline-Diktat 1.2.0 · Losansky.IT
+# Offline-Diktat 1.2.1 · Losansky.IT
+
+## Neu in 1.2.1
+
+Im Text-KI-Fenster kann die Anweisung mit demselben Tastenkürzel und Mikrofon
+wie beim normalen Diktieren gesprochen werden. Gedrückthalten und Umschaltmodus
+werden aus den Einstellungen übernommen. Alternativ „Anweisung diktieren“ klicken.
+Der erkannte Text ersetzt die Auswahl oder wird an der Cursorposition im
+Anweisungsfeld eingefügt. Er wird niemals automatisch an die Text-KI gesendet.
+ESC verwirft die laufende Anweisungsaufnahme; vorhandener Text bleibt erhalten.
+Während die KI arbeitet, ist eine weitere Aufnahme gesperrt.
 
 ## Neu in 1.2.0
 

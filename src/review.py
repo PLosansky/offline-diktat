@@ -1,7 +1,8 @@
 """Explicit review boundary: generation never types or changes the clipboard."""
 import threading
 import re
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
+import engine
 from PySide6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel,
     QTextEdit, QPushButton, QSplitter, QWidget, QMenu)
 
@@ -16,6 +17,12 @@ class Review(QDialog):
         self.copy_after = False
         self.conversation = []
         self.pending = None
+        self.voice_state = "idle"
+        self.voice_recorder = None
+        self.voice_stop_requested = False
+        self.voice_button_mode = False
+        self.voice_timer = QTimer(self)
+        self.voice_timer.timeout.connect(self.voice_tick)
         self.setWindowTitle("Text-KI · Gemeinsam am Text arbeiten")
         self.resize(1050, 720)
         box = QVBoxLayout(self)
@@ -69,6 +76,12 @@ class Review(QDialog):
         shortcuts.addWidget(self.reset)
         box.addLayout(shortcuts)
         box.addWidget(self.instruction)
+        self.dictate = QPushButton("Anweisung diktieren")
+        self.dictate.setToolTip("Gleiches Mikrofon und Tastenkürzel wie beim normalen Diktieren. Kein automatisches Senden.")
+        self.dictate.clicked.connect(self.voice_clicked)
+        box.addWidget(self.dictate)
+        keys = " + ".join(owner.cfg["keys"]).upper()
+        box.addWidget(QLabel(f"{keys}: " + ("Aufnahme starten / stoppen" if owner.cfg["toggle"] else "zum Diktieren gedrückt halten") + " · ESC: abbrechen"))
         self.status = QLabel("Namen, Zahlen und Verneinungen bitte besonders prüfen.")
         self.status.setWordWrap(True)
         box.addWidget(self.status)
@@ -89,12 +102,12 @@ class Review(QDialog):
         self.result.textChanged.connect(self.result_changed)
 
     def result_changed(self):
-        ready = bool(self.result.toPlainText().strip()) and not self.busy
+        ready = bool(self.result.toPlainText().strip()) and not self.busy and self.voice_state == "idle"
         self.approve.setEnabled(ready)
         self.copy.setEnabled(ready)
 
     def restart(self):
-        if not self.busy:
+        if not self.busy and self.voice_state == "idle":
             self.conversation = []
             self.result.clear()
             self.chat.clear()
@@ -102,9 +115,10 @@ class Review(QDialog):
 
     def run(self):
         instruction = self.instruction.toPlainText().strip()
-        if self.busy or not instruction:
+        if self.busy or self.voice_state != "idle" or not instruction:
             return
         self.busy = True
+        self.dictate.setEnabled(False)
         self.cancel_event.clear()
         self.result_changed()
         self.result.setReadOnly(True)
@@ -132,6 +146,7 @@ class Review(QDialog):
 
     def finished(self, result, error):
         self.busy = False
+        self.dictate.setEnabled(True)
         self.generate.setEnabled(True)
         self.result.setReadOnly(False)
         self.instruction.setEnabled(True)
@@ -160,7 +175,7 @@ class Review(QDialog):
              "Weitere Anweisung eingeben oder Vorschlag freigeben."))
 
     def accept(self):
-        if not self.busy and self.result.toPlainText().strip():
+        if not self.busy and self.voice_state == "idle" and self.result.toPlainText().strip():
             super().accept()
 
     def approve_copy(self):
@@ -168,9 +183,132 @@ class Review(QDialog):
         self.accept()
 
     def reject(self):
+        if self.voice_state != "idle":
+            self.cancel_event.set()
+            self.voice_stop_requested = True
+            self.status.setText("Diktat wird abgebrochen …")
+            if self.voice_state == "recording":
+                self.voice_stop()
+            return
         if self.busy:
             self.cancel_event.set()
             self.owner.llm.stop()
             self.status.setText("Wird abgebrochen. Original bleibt erhalten …")
             return
         super().reject()
+
+    def voice_pressed(self):
+        if self.owner.cfg["toggle"] and self.voice_state in ("starting", "recording"):
+            self.voice_stop_requested = True
+            if self.voice_state == "recording":
+                self.voice_stop()
+        elif self.voice_state == "idle" and not self.busy:
+            self.voice_start()
+
+    def voice_released(self):
+        if self.owner.cfg["toggle"] or self.voice_button_mode:
+            return
+        if self.voice_state == "starting":
+            self.voice_stop_requested = True
+        elif self.voice_state == "recording":
+            self.voice_stop()
+
+    def voice_clicked(self):
+        if self.voice_state in ("starting", "recording"):
+            self.voice_stop_requested = True
+            if self.voice_state == "recording":
+                self.voice_stop()
+        elif self.voice_state == "idle" and not self.busy:
+            self.voice_start(button=True)
+
+    def voice_controls(self):
+        idle = self.voice_state == "idle"
+        for widget in (self.generate, self.reset, self.instruction, *self.shortcut_buttons):
+            widget.setEnabled(idle)
+        self.result.setReadOnly(not idle)
+        self.dictate.setEnabled(self.voice_state != "processing")
+        self.dictate.setText("Anweisung diktieren" if idle else "Aufnahme stoppen")
+        self.abort.setText("Verwerfen / Schließen" if idle else "Diktat abbrechen")
+        self.result_changed()
+
+    def voice_start(self, button=False):
+        if self.busy or self.voice_state != "idle":
+            return
+        if self.owner.recognizer is None:
+            self.status.setText("Bitte zuerst das Sprachmodell über die Einrichtung laden.")
+            return
+        self.voice_cursor = self.instruction.textCursor()
+        self.voice_button_mode = button
+        self.voice_stop_requested = False
+        self.cancel_event.clear()
+        self.voice_state = "starting"
+        self.voice_controls()
+        self.status.setText("Mikrofon wird für die KI-Anweisung geöffnet …")
+        def work():
+            recorder = self.owner.make_recorder()
+            recorder.start()
+            return recorder
+        self.owner.tasks.run(work, self.voice_started)
+
+    def voice_started(self, recorder, error):
+        if error:
+            self.voice_done(None, error)
+            return
+        self.voice_recorder = recorder
+        self.voice_state = "recording"
+        self.status.setText("Anweisung aufnehmen … Loslassen oder Aufnahme stoppen.")
+        self.voice_timer.start(100)
+        if self.voice_stop_requested or self.cancel_event.is_set():
+            self.voice_stop()
+
+    def voice_tick(self):
+        if self.voice_recorder:
+            seconds = self.voice_recorder.count // engine.RATE
+            self.status.setText(f"Anweisung aufnehmen · {seconds // 60:02d}:{seconds % 60:02d} · ESC verwirft das Diktat")
+            if self.voice_recorder.full:
+                self.voice_stop()
+
+    def voice_stop(self):
+        recorder = self.voice_recorder
+        if not recorder:
+            return
+        self.voice_recorder = None
+        self.voice_timer.stop()
+        self.voice_state = "processing"
+        self.voice_controls()
+        self.status.setText("Anweisung wird lokal erkannt …")
+        def work():
+            audio = recorder.stop()
+            engine.check_cancel(self.cancel_event)
+            if not len(audio):
+                raise ValueError("Keine Aufnahme erhalten. Bitte das Mikrofon prüfen.")
+            text = self.owner.recognizer.transcribe(audio, lambda *_: None, self.cancel_event)
+            return text, recorder.overflow
+        self.owner.tasks.run(work, self.voice_done)
+
+    def voice_done(self, result, error):
+        self.voice_timer.stop()
+        self.voice_state = "idle"
+        self.voice_controls()
+        if self.cancel_event.is_set() or error:
+            self.status.setText("Diktat verworfen. Bisherige Anweisung bleibt erhalten." if self.cancel_event.is_set() else str(error))
+            return
+        text, overflow = result
+        text = text.strip()
+        if not text:
+            self.status.setText("Keine Sprache erkannt. Bitte erneut diktieren.")
+            return
+        # Insert at the captured cursor/selection; do not touch document or clipboard.
+        cursor = self.voice_cursor
+        existing = self.instruction.toPlainText()
+        # Qt cursor positions count UTF-16 code units.
+        units = existing.encode("utf-16-le")
+        before = units[:cursor.selectionStart() * 2].decode("utf-16-le")
+        after = units[cursor.selectionEnd() * 2:].decode("utf-16-le")
+        prefix = " " if before and not before[-1].isspace() else ""
+        suffix = " " if after and not after[0].isspace() else ""
+        cursor.insertText(prefix + text + suffix)
+        self.instruction.setTextCursor(cursor)
+        self.instruction.setFocus()
+        self.status.setText("Audioblöcke verloren – Anweisung vor dem Senden prüfen." if overflow else
+                            "Anweisung erkannt. Prüfen und mit „Anweisung senden“ ausführen.")

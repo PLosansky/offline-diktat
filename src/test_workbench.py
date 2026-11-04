@@ -209,6 +209,115 @@ class WorkbenchTests(unittest.TestCase):
             task.assert_not_called()
         self.assertFalse(hasattr(self.window, "command_box"))
 
+    def voice_dialog(self):
+        from review import Review
+        dialog = Review(self.window, "Original")
+        self.window.recognizer = Mock()
+        self.window.recognizer.transcribe.return_value = "Bitte freundlicher formulieren."
+        recorder = Mock(count=16000, full=False, overflow=False)
+        recorder.stop.return_value = [0.1] * 20
+        self.window.active_review = dialog
+        self.window.state = "review"
+        self.addCleanup(setattr, self.window, "active_review", None)
+        return dialog, recorder
+
+    def test_review_hotkey_records_only_instruction_without_sending(self):
+        dialog, recorder = self.voice_dialog()
+        self.qt.clipboard().setText("Unverändert")
+        self.window.editor.setPlainText("Dokument")
+        def immediate(work, callback):
+            callback(work(), None)
+        with patch.object(self.window, "make_recorder", return_value=recorder), \
+             patch.object(self.window.tasks, "run", side_effect=immediate), \
+             patch.object(self.window.llm, "rewrite") as rewrite, \
+             patch.object(self.module.windows, "type_text") as typing:
+            self.window.pressed()
+            self.assertEqual(dialog.voice_state, "recording")
+            self.assertFalse(dialog.generate.isEnabled())
+            self.window.released()
+            self.assertEqual(dialog.voice_state, "idle")
+            self.assertEqual(dialog.instruction.toPlainText(), "Bitte freundlicher formulieren.")
+            recorder.stop.assert_called_once()
+            rewrite.assert_not_called()
+            typing.assert_not_called()
+            self.assertEqual(self.window.editor.toPlainText(), "Dokument")
+            self.assertEqual(self.qt.clipboard().text(), "Unverändert")
+        dialog.reject()
+
+    def test_review_release_during_start_and_toggle(self):
+        dialog, recorder = self.voice_dialog()
+        with patch.object(self.window.tasks, "run") as tasks:
+            self.window.pressed()
+            self.window.released()
+            self.assertTrue(dialog.voice_stop_requested)
+            dialog.voice_started(recorder, None)
+            self.assertEqual(dialog.voice_state, "processing")
+            self.assertEqual(tasks.call_count, 2)
+            dialog.voice_done(("Text", False), None)
+            self.window.cfg["toggle"] = True
+            self.window.pressed()
+            dialog.voice_started(recorder, None)
+            self.window.released()
+            self.assertEqual(dialog.voice_state, "recording")
+            self.window.pressed()
+            self.assertEqual(dialog.voice_state, "processing")
+            dialog.voice_done(("Weiter", False), None)
+        dialog.reject()
+
+    def test_review_cancel_during_start_preserves_instruction(self):
+        dialog, recorder = self.voice_dialog()
+        dialog.instruction.setPlainText("Bisheriger Wunsch")
+        with patch.object(self.window.tasks, "run") as tasks:
+            self.window.pressed()
+            dialog.reject()
+            self.assertTrue(dialog.cancel_event.is_set())
+            dialog.voice_started(recorder, None)
+            work, callback = tasks.call_args.args
+            with self.assertRaises(engine.Cancelled):
+                work()
+            callback(None, engine.Cancelled("Abbruch"))
+            recorder.stop.assert_called_once()
+            self.window.recognizer.transcribe.assert_not_called()
+            self.assertEqual(dialog.instruction.toPlainText(), "Bisheriger Wunsch")
+            self.assertEqual(dialog.voice_state, "idle")
+        dialog.reject()
+
+    def test_review_dictation_selection_utf16_and_busy_guard(self):
+        from PySide6.QtGui import QTextCursor
+        dialog, recorder = self.voice_dialog()
+        dialog.instruction.setPlainText("😀 Alt Ende")
+        cursor = dialog.instruction.textCursor()
+        cursor.setPosition(3)
+        cursor.setPosition(6, QTextCursor.MoveMode.KeepAnchor)
+        dialog.instruction.setTextCursor(cursor)
+        with patch.object(self.window.tasks, "run") as tasks:
+            dialog.busy = True
+            self.window.pressed()
+            tasks.assert_not_called()
+            dialog.busy = False
+            dialog.voice_start()
+            dialog.voice_done(("Neu", False), None)
+            self.assertEqual(dialog.instruction.toPlainText(), "😀 Neu Ende")
+        dialog.reject()
+
+    def test_review_microphone_error_allows_retry_and_button_ignores_release(self):
+        dialog, recorder = self.voice_dialog()
+        with patch.object(self.window.tasks, "run"):
+            dialog.voice_clicked()
+            dialog.voice_started(None, OSError("Mikrofon nicht verfügbar"))
+            self.assertEqual(dialog.voice_state, "idle")
+            self.assertTrue(dialog.dictate.isEnabled())
+            dialog.voice_clicked()
+            dialog.voice_started(recorder, None)
+            self.window.released()
+            self.assertEqual(dialog.voice_state, "recording")
+            dialog.voice_clicked()
+            self.assertEqual(dialog.voice_state, "processing")
+            dialog.voice_done(("Text", True), None)
+            self.assertIn("Audioblöcke", dialog.status.text())
+            self.assertEqual(dialog.instruction.toPlainText(), "Text")
+        dialog.reject()
+
     def test_daily_update_check_and_recording_guard(self):
         import time
         self.window.cfg.update(check_updates=True, setup=True, update_checked=time.time())

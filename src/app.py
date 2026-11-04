@@ -27,8 +27,8 @@ from speech_import import SpeechImport
 import model_store
 import text_tools
 
-VERSION = "1.2.0"
-DISPLAY_VERSION = "1.2.0"
+VERSION = "1.2.1"
+DISPLAY_VERSION = "1.2.1"
 APP_NAME = "Offline-Diktat"
 BASE = Path(sys.executable).parent if getattr(sys, "frozen", False) else Path(__file__).parent
 DATA = Path(os.environ.get("DICTATE_DATA_DIR", str(Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "DictateOffline")))
@@ -826,12 +826,18 @@ class Main(UpdateSupport, QMainWindow):
     def pressed(self):
         if not self.hotkeys.enabled:
             return
+        if self.active_review:
+            self.active_review.voice_pressed()
+            return
         if self.state == "recording" and self.cfg["toggle"]:
             self.stop_recording()
         elif self.state == "idle":
             self.start_recording()
 
     def released(self):
+        if self.active_review:
+            self.active_review.voice_released()
+            return
         if self.cfg["toggle"] or self.button_recording:
             return
         if self.state == "starting":
@@ -861,10 +867,13 @@ class Main(UpdateSupport, QMainWindow):
         self.feedback.setText("")
         self.change_state("starting", "Mikrofon wird geöffnet …")
         def work():
-            rec = engine.Recorder(resolve_device(self.cfg["device_name"], self.cfg["device_host"]))
+            rec = self.make_recorder()
             rec.start()
             return rec
         self.tasks.run(work, self.recording_started)
+
+    def make_recorder(self):
+        return engine.Recorder(resolve_device(self.cfg["device_name"], self.cfg["device_host"]))
 
     def recording_started(self, recorder, error):
         if error:
@@ -1030,7 +1039,6 @@ class Main(UpdateSupport, QMainWindow):
             self.feedback.setText("Zuerst Text diktieren oder im Editor eingeben.")
             return
         self.change_state("review", "Text-KI · Vorschau")
-        self.hotkeys.enabled = False
         self.tray.contextMenu().setEnabled(False)
         dialog = Review(self, text, self.current_profile)
         self.active_review = dialog
