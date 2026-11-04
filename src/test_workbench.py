@@ -179,6 +179,51 @@ class WorkbenchTests(unittest.TestCase):
         dialog.reject()
         self.assertEqual(self.window.editor.toPlainText(), "Originaltext")
 
+    def test_chat_followup_uses_manual_edits_and_keeps_failed_turn_out(self):
+        from review import Review
+        dialog = Review(self.window, "Original 14 Uhr")
+        with patch.object(self.window.tasks, "run") as task:
+            dialog.instruction.setPlainText("Freundlicher")
+            dialog.run()
+            self.assertFalse(dialog.approve.isEnabled())
+            dialog.finished(("Freundlicher Vorschlag 14 Uhr", 0.1), None)
+            self.assertEqual(len(dialog.conversation), 3)
+            dialog.result.setPlainText("Handkorrektur 14 Uhr")
+            dialog.instruction.setPlainText("Kürzer")
+            dialog.run()
+            self.assertEqual(dialog.pending[0][-2]["content"], "Handkorrektur 14 Uhr")
+            dialog.finished(None, ValueError("Kontext zu lang"))
+            self.assertEqual(dialog.result.toPlainText(), "Handkorrektur 14 Uhr")
+            self.assertEqual(len(dialog.conversation), 3)
+            self.assertTrue(dialog.approve.isEnabled())
+            dialog.restart()
+            self.assertEqual(dialog.conversation, [])
+            self.assertFalse(dialog.approve.isEnabled())
+        dialog.reject()
+
+    def test_disabled_update_check_never_schedules_network(self):
+        self.window.cfg.update(check_updates=False, setup=True, update_checked=0)
+        self.window.state = "idle"
+        with patch.object(self.window.tasks, "run") as task:
+            self.window.auto_update_check()
+            task.assert_not_called()
+        self.assertFalse(hasattr(self.window, "command_box"))
+
+    def test_daily_update_check_and_recording_guard(self):
+        import time
+        self.window.cfg.update(check_updates=True, setup=True, update_checked=time.time())
+        with patch.object(self.window, "check_updates") as check:
+            self.window.state = "idle"
+            self.window.auto_update_check()
+            check.assert_not_called()
+            self.window.cfg["update_checked"] = 0
+            self.window.state = "recording"
+            self.window.auto_update_check()
+            check.assert_not_called()
+            self.window.state = "idle"
+            self.window.auto_update_check()
+            check.assert_called_once_with(manual=False)
+
     def test_failed_generation_cannot_be_approved(self):
         from review import Review
         dialog = Review(self.window, "Original")

@@ -22,12 +22,13 @@ from storage import prepare_user_directory
 from settings_ui import AdvancedSettings
 from llm import LocalLLM
 from review import Review
+from update_ui import UpdateSupport
 from speech_import import SpeechImport
 import model_store
 import text_tools
 
-VERSION = "1.1.0"
-DISPLAY_VERSION = "1.1.0"
+VERSION = "1.2.0"
+DISPLAY_VERSION = "1.2.0"
 APP_NAME = "Offline-Diktat"
 BASE = Path(sys.executable).parent if getattr(sys, "frozen", False) else Path(__file__).parent
 DATA = Path(os.environ.get("DICTATE_DATA_DIR", str(Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "DictateOffline")))
@@ -39,7 +40,8 @@ DEFAULT = {"model": str(DEFAULT_MODEL), "device_name": "", "device_host": "", "k
            "history_days": 0, "draft_protection": False, "close_to_tray": True,
            "dictionary": "", "templates": "", "llm_enabled": False, "llm_model": "",
            "llm_runtime": "", "llm_threads": min(4, os.cpu_count() or 1),
-           "llm_context": 4096, "llm_keep_loaded": False, "known_models": []}
+           "llm_context": 4096, "llm_keep_loaded": False, "known_models": [],
+           "check_updates": True, "update_checked": 0}
 
 STYLE = """
 QWidget { background: #111922; color: #e8edf2; font-family: 'Segoe UI'; font-size: 14px; }
@@ -514,7 +516,7 @@ def set_autostart(enabled):
                 pass
 
 
-class Main(QMainWindow):
+class Main(UpdateSupport, QMainWindow):
     def __init__(self, testing=False):
         super().__init__()
         self.testing = testing
@@ -582,6 +584,8 @@ class Main(QMainWindow):
         self.about_button = button("Über Offline-Diktat", self.show_about)
         header_actions.addWidget(self.settings_button)
         header_actions.addWidget(self.about_button)
+        self.update_button = button("Nach Updates suchen", self.check_updates)
+        header_actions.addWidget(self.update_button)
         header.addLayout(header_actions)
         layout.addLayout(header)
         card = QFrame()
@@ -598,10 +602,7 @@ class Main(QMainWindow):
         self.record_button = button("Aufnahme starten", self.record_clicked, True)
         self.continue_button = button("Weiterdiktieren", lambda: self.record_clicked(append=True))
         self.new_button = button("Neuer Text", self.new_text)
-        self.command_box = QCheckBox("Nächste Aufnahme als Sprachbefehl")
-        self.command_box.setToolTip("Nur im Editor: Neuer Absatz · Letzten Satz löschen · Rückgängig · Stil professionell · "
-                                    "Bitte formuliere den vorherigen Abschnitt professioneller")
-        for widget in (self.record_button, self.continue_button, self.new_button, self.command_box):
+        for widget in (self.record_button, self.continue_button, self.new_button):
             record_row.addWidget(widget)
         card_box.addLayout(record_row)
         self.progress = QProgressBar()
@@ -698,6 +699,7 @@ class Main(QMainWindow):
                 else:
                     self.history.setCurrentRow(match)
         self.update_hint()
+        self.init_updates(DATA, VERSION, testing)
         if not testing:
             self.tray.show()
             try:
@@ -732,7 +734,7 @@ class Main(QMainWindow):
         self.about_button.setEnabled(state == "idle")
         self.record_button.setEnabled(state in {"idle", "recording"})
         self.record_button.setText("Aufnahme stoppen" if state == "recording" else "Aufnahme starten")
-        for widget in (self.continue_button, self.new_button, self.command_box, self.editor,
+        for widget in (self.continue_button, self.new_button, self.editor,
                        self.history, self.clear_button, self.undo_button, self.original_button, self.insert_button):
             widget.setEnabled(state == "idle")
         self.ai_button.setEnabled(state == "idle" and self.cfg["llm_enabled"])
@@ -851,8 +853,7 @@ class Main(QMainWindow):
         if windows.window_pid(self.target) == os.getpid():
             self.target = None
         self.button_recording = from_button
-        self.command_recording = self.command_box.isChecked()
-        self.command_box.setChecked(False)
+        self.command_recording = False
         self.capture_editor = from_button or not self.target or self.cfg["output_mode"] == "editor" or self.command_recording
         self.append_recording = append
         self.cancel_event.clear()

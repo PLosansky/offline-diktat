@@ -37,6 +37,13 @@ class AdvancedSettings:
         box.addLayout(form)
         box.addWidget(self.drafts)
         box.addWidget(self.close_tray)
+        self.check_updates = QCheckBox("Automatisch täglich nach Updates suchen (Verbindung zu GitHub)")
+        self.check_updates.setChecked(self.cfg.get("check_updates", True))
+        box.addWidget(self.check_updates)
+        update_info = QLabel("Es werden nur Versionsinformationen abgerufen, keine Diktate übertragen. "
+                            "Downloads erfolgen erst nach Bestätigung. Manuelle Prüfung im Hauptfenster.")
+        update_info.setWordWrap(True)
+        box.addWidget(update_info)
         label = QLabel("Verlauf und Entwurf sind separate, unverschlüsselte lokale Textdateien im Benutzerprofil. "
                        "Ohne Aktivierung bleiben Texte nur für diese Sitzung erhalten. Audio wird nicht gespeichert.")
         label.setWordWrap(True)
@@ -184,4 +191,4 @@ class AdvancedSettings:
             notifications=self.notifications.currentText(), history_limit=self.history_limit.value(),
             history_days=self.history_days.value(), draft_protection=self.drafts.isChecked(),
             close_to_tray=self.close_tray.isChecked(), llm_enabled=self.llm_enabled.isChecked(),
-            dictionary=rules, templates=templates)
+            dictionary=rules, templates=templates, check_updates=self.check_updates.isChecked())

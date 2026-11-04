@@ -106,7 +106,7 @@ class LocalLLM:
             tokens = self.request("/tokenize", {"content": prompt, "add_special": True})["tokens"]
             available = cfg["llm_context"] - len(tokens) - 64
             if available < 256:
-                raise ValueError("Dieser Text ist für die gewählte Kontextgröße zu lang. Einen Abschnitt markieren oder die Kontextgröße erhöhen. Es wurde nichts abgeschnitten.")
+                raise ValueError("Dieser Text oder Bearbeitungsverlauf ist für die gewählte Kontextgröße zu lang. Neu vom Original beginnen, einen kürzeren Abschnitt bearbeiten oder die Kontextgröße erhöhen. Es wurde nichts abgeschnitten.")
             progress(20, "Text wird bearbeitet … Abbrechen ist jederzeit möglich.")
             qwen35 = "qwen3.5" in Path(cfg.get("llm_model", "")).name.casefold()
             small35 = qwen35 and "0.8b" in Path(cfg.get("llm_model", "")).name.casefold()

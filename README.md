@@ -1,11 +1,13 @@
 # Offline-Diktat
 
 Windows-Anwendung von Losansky.IT für lokale, CPU-basierte Spracherkennung.
-Aktueller Stand: **1.1.0**.
+Aktueller Stand: **1.2.0**.
 
 Aufnahme per Tastenkürzel oder Schaltfläche, Texteingabe in Windows-Anwendungen,
 Editor und optional eine lokale Text-KI mit Vorschau und ausdrücklicher Freigabe.
+Freie Bearbeitungsanweisungen können im Dialog schrittweise verfeinert werden.
 Nach dem Herunterladen oder manuellen Import der Modelle ist der Betrieb offline möglich.
+Die abschaltbare Updateprüfung verwendet öffentliche GitHub Releases.
 
 ## Entwicklung
 

@@ -1,4 +1,42 @@
-# Offline-Diktat 1.1.0 · Losansky.IT
+# Offline-Diktat 1.2.0 · Losansky.IT
+
+## Neu in 1.2.0
+
+- Text-KI mit freier Anweisung und mehreren aufeinanderfolgenden Bearbeitungsschritten.
+  Der nächste Wunsch bezieht sich auf den aktuellen Vorschlag einschließlich Handkorrekturen.
+  Original, Verlauf und Vorschlag bleiben sichtbar. Die Antwort erscheint nach Abschluss
+  der Berechnung, nicht Wort für Wort. Erst Freigabe übernimmt oder kopiert den Text.
+- Drei Schnellvorlagen sowie eigene gespeicherte Vorlagen als optionale Eingabehilfen.
+  Mit „Neu vom Original beginnen“ wird der Bearbeitungsverlauf zurückgesetzt.
+  Der Verlauf bleibt ausschließlich im Dialog und wird nicht gespeichert.
+- Der Haken für Sprachbefehle wurde aus dem Hauptfenster entfernt.
+- Automatische Updateprüfung einmal täglich nach abgeschlossener Einrichtung,
+  abschaltbar unter Einstellungen → Textausgabe und Verlauf. Manuelle Prüfung im Hauptfenster.
+  Dabei wird GitHub kontaktiert, jedoch kein Diktat übertragen. Ohne Internet funktioniert
+  das Diktieren weiter; automatische Prüffehler öffnen kein Fenster.
+- Updates kommen aus stabilen GitHub Releases von PLosansky/offline-diktat.
+  Download nur nach Bestätigung; Größen- und SHA-256-Prüfung vor Bereitstellung.
+  Die Prüfsumme stammt von GitHub und ist keine unabhängige Herausgebersignatur.
+  Downloads liegen unter %LOCALAPPDATA%/DictateOffline/updates.
+  Die Anwendung ersetzt keine laufende EXE und benötigt keine Administratorrechte.
+
+### Update installieren
+
+Die Anwendung über „Beenden“ vollständig schließen. Das Update-ZIP in einen neuen
+Ordner entpacken und die neue Offline-Diktat.exe starten. Modelle aus dem bisherigen
+Programmordner übernehmen oder deren bisherigen Pfad in den Einstellungen auswählen.
+Einstellungen im Benutzerprofil bleiben erhalten. Bei geschützten Programmordnern
+übernimmt die Firmen-IT das Ersetzen. Version 1.1.0 benötigt dieses erste Update manuell.
+
+### Neue Version veröffentlichen
+
+Eine Versionsmarkierung allein genügt nicht: Ein öffentliches, stabiles GitHub Release
+mit dem passenden Windows-Paket ist erforderlich. Für Version X.Y.Z heißt das Paket
+`Offline-Diktat-X.Y.Z-Update.zip`, der Tag `vX.Y.Z`. Der Updater verlangt den
+SHA-256-Digest des GitHub-Release-Assets; Vorabversionen werden übersprungen.
+Das Paket enthält Bibliotheken, Lizenztexte und Quellcode, aber keine persönlichen
+Daten oder Modellgewichte. Modelle und die llama.cpp-Laufzeit haben eigene Versionen
+und werden nicht automatisch durch die Updateprüfung verändert.
 
 ## Neu in 1.1.0
 

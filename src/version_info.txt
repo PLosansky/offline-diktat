@@ -1,14 +1,14 @@
 VSVersionInfo(
-  ffi=FixedFileInfo(filevers=(1, 1, 0, 0), prodvers=(1, 1, 0, 0), mask=0x3f,
+  ffi=FixedFileInfo(filevers=(1, 2, 0, 0), prodvers=(1, 2, 0, 0), mask=0x3f,
                    flags=0x0, OS=0x40004, fileType=0x1, subtype=0x0, date=(0, 0)),
   kids=[StringFileInfo([StringTable('040704B0', [
     StringStruct('CompanyName', 'Losansky.IT'),
     StringStruct('FileDescription', 'Offline-Diktat'),
-    StringStruct('FileVersion', '1.1.0'),
+    StringStruct('FileVersion', '1.2.0'),
     StringStruct('InternalName', 'Offline-Diktat'),
     StringStruct('LegalCopyright', '© 2026 Losansky.IT; Drittanbieterhinweise siehe Lizenzen'),
     StringStruct('OriginalFilename', 'Offline-Diktat.exe'),
     StringStruct('ProductName', 'Offline-Diktat'),
-    StringStruct('ProductVersion', '1.1.0')
+    StringStruct('ProductVersion', '1.2.0')
   ])]), VarFileInfo([VarStruct('Translation', [1031, 1200])])]
 )
