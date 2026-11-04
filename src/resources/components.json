@@ -1,0 +1,591 @@
+[
+  {
+    "name": "Dictate · Projektgrundlage",
+    "version": "56ac48730d3b",
+    "description": "winidi – Grundlage der Offline-Erkennung. Windows-Oberfläche und Integration wurden angepasst.",
+    "license": "MIT",
+    "files": [
+      {
+        "label": "Dictate-MIT.txt",
+        "path": "LICENSES/Dictate-MIT.txt"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode dieser Grundlage",
+        "https://github.com/winidi/dictate/tree/56ac48730d3b206e2d1aa8ad39decf5cab9cbd6d"
+      ]
+    ]
+  },
+  {
+    "name": "Parakeet DE · Sprachmodell",
+    "version": "Revision d548e25b9bfe",
+    "description": "NVIDIA (Basismodell), primeline (deutsche Anpassung), flozen1981 (ONNX/INT8). Die bereitgestellten Gewichte werden unverändert verwendet.",
+    "license": "CC BY 4.0",
+    "files": [
+      {
+        "label": "CC-BY-4.0.txt",
+        "path": "LICENSES/CC-BY-4.0.txt"
+      }
+    ],
+    "links": [
+      [
+        "Modelldateien & Herkunft",
+        "https://huggingface.co/flozen1981/parakeet-primeline-onnx/tree/d548e25b9bfe559aa274f361892dc4ed5d64743a"
+      ],
+      [
+        "Deutsche Anpassung",
+        "https://huggingface.co/primeline/parakeet-primeline"
+      ],
+      [
+        "NVIDIA-Basismodell",
+        "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3"
+      ]
+    ]
+  },
+  {
+    "name": "Qt / PySide6 / Shiboken",
+    "version": "6.12.0",
+    "description": "The Qt Company und Mitwirkende – Fenster und Bedienelemente. LGPL-Bibliotheken dürfen ausgetauscht und für eigene Änderungen untersucht werden.",
+    "license": "LGPLv3 (genutzte Lizenzoption)",
+    "files": [
+      {
+        "label": "LGPL-3.0.txt",
+        "path": "LICENSES/LGPL-3.0.txt"
+      },
+      {
+        "label": "GPL-3.0.txt",
+        "path": "LICENSES/GPL-3.0.txt"
+      }
+    ],
+    "links": [
+      [
+        "Qt-Quellcode",
+        "https://code.qt.io/cgit/qt/qtbase.git/?h=v6.12.0"
+      ],
+      [
+        "PySide-/Shiboken-Quellcode",
+        "https://code.qt.io/cgit/pyside/pyside-setup.git/?h=v6.12.0"
+      ]
+    ]
+  },
+  {
+    "name": "sherpa-onnx",
+    "version": "1.13.8",
+    "description": "k2-fsa und Mitwirkende – lokale Ausführung des Spracherkennungsmodells.",
+    "license": "Apache-2.0",
+    "files": [
+      {
+        "label": "sherpa-onnx/sherpa_onnx-1.13.8.dist-info/licenses/LICENSE",
+        "path": "LICENSES/sherpa-onnx/sherpa_onnx-1.13.8.dist-info/licenses/LICENSE"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/k2-fsa/sherpa-onnx/tree/v1.13.8"
+      ]
+    ]
+  },
+  {
+    "name": "ONNX Runtime",
+    "version": "Mit sherpa-onnx 1.13.8 gebündelt",
+    "description": "Microsoft und Mitwirkende – CPU-Berechnungen für das ONNX-Modell.",
+    "license": "MIT und Drittanbieterhinweise",
+    "files": [
+      {
+        "label": "ONNXRuntime-LICENSE.txt",
+        "path": "LICENSES/ONNXRuntime-LICENSE.txt"
+      },
+      {
+        "label": "ONNXRuntime-ThirdPartyNotices.txt",
+        "path": "LICENSES/ONNXRuntime-ThirdPartyNotices.txt"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/microsoft/onnxruntime"
+      ]
+    ]
+  },
+  {
+    "name": "NumPy",
+    "version": "2.5.3",
+    "description": "NumPy Developers – Verarbeitung der Audiodaten.",
+    "license": "BSD-3-Clause und Drittanbieterhinweise",
+    "files": [
+      {
+        "label": "numpy/numpy/_core/include/numpy/random/LICENSE.txt",
+        "path": "LICENSES/numpy/numpy/_core/include/numpy/random/LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy/ma/LICENSE",
+        "path": "LICENSES/numpy/numpy/ma/LICENSE"
+      },
+      {
+        "label": "numpy/numpy/random/LICENSE.md",
+        "path": "LICENSES/numpy/numpy/random/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/LICENSE.txt",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/include/numpy/libdivide/LICENSE.txt",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/include/numpy/libdivide/LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/common/pythoncapi-compat/COPYING",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/common/pythoncapi-compat/COPYING"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/highway/LICENSE",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/highway/LICENSE"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/multiarray/dragon4_LICENSE.txt",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/multiarray/dragon4_LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/umath/svml/LICENSE",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/umath/svml/LICENSE"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/linalg/lapack_lite/LICENSE.txt",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/linalg/lapack_lite/LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/ma/LICENSE",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/ma/LICENSE"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/distributions/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/distributions/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/philox/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/philox/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/numpy/numpy/tree/v2.5.3"
+      ]
+    ]
+  },
+  {
+    "name": "sounddevice",
+    "version": "0.5.6",
+    "description": "Matthias Geier und Mitwirkende – Mikrofonaufnahme.",
+    "license": "MIT",
+    "files": [
+      {
+        "label": "sounddevice/sounddevice-0.5.6.dist-info/licenses/LICENSE",
+        "path": "LICENSES/sounddevice/sounddevice-0.5.6.dist-info/licenses/LICENSE"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/spatialaudio/python-sounddevice/tree/0.5.6"
+      ]
+    ]
+  },
+  {
+    "name": "PortAudio",
+    "version": "19.7.0-devel",
+    "description": "PortAudio-Mitwirkende – Windows-Audiozugriff. Die Bibliothek meldet keine genaue Quellrevision.",
+    "license": "MIT-artige Lizenz",
+    "files": [
+      {
+        "label": "PortAudio-LICENSE.txt",
+        "path": "LICENSES/PortAudio-LICENSE.txt"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/PortAudio/portaudio"
+      ]
+    ]
+  },
+  {
+    "name": "pynput",
+    "version": "1.8.2",
+    "description": "Moses Palmér und Mitwirkende – globale Tastenkürzel.",
+    "license": "LGPLv3",
+    "files": [
+      {
+        "label": "pynput/pynput-1.8.2.dist-info/licenses/COPYING.LGPL",
+        "path": "LICENSES/pynput/pynput-1.8.2.dist-info/licenses/COPYING.LGPL"
+      },
+      {
+        "label": "GPL-3.0.txt",
+        "path": "LICENSES/GPL-3.0.txt"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/moses-palmer/pynput/tree/v1.8.2"
+      ]
+    ]
+  },
+  {
+    "name": "CFFI",
+    "version": "2.1.1",
+    "description": "CFFI-Mitwirkende – Verbindung zu nativen Bibliotheken.",
+    "license": "MIT",
+    "files": [
+      {
+        "label": "cffi/cffi-2.1.1.dist-info/licenses/LICENSE",
+        "path": "LICENSES/cffi/cffi-2.1.1.dist-info/licenses/LICENSE"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/python-cffi/cffi"
+      ]
+    ]
+  },
+  {
+    "name": "pycparser",
+    "version": "3.11",
+    "description": "Eli Bendersky und Mitwirkende – C-Parser für CFFI.",
+    "license": "BSD",
+    "files": [
+      {
+        "label": "pycparser/pycparser-3.11.dist-info/licenses/LICENSE",
+        "path": "LICENSES/pycparser/pycparser-3.11.dist-info/licenses/LICENSE"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/eliben/pycparser"
+      ]
+    ]
+  },
+  {
+    "name": "six",
+    "version": "1.17.0",
+    "description": "Benjamin Peterson und Mitwirkende – Python-Kompatibilität.",
+    "license": "MIT",
+    "files": [
+      {
+        "label": "six/six-1.17.0.dist-info/LICENSE",
+        "path": "LICENSES/six/six-1.17.0.dist-info/LICENSE"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/benjaminp/six"
+      ]
+    ]
+  },
+  {
+    "name": "Python",
+    "version": "3.12.14",
+    "description": "Python Software Foundation und Mitwirkende – mitgelieferte Programmlaufzeit.",
+    "license": "PSF-Lizenz und zugehörige Hinweise",
+    "files": [
+      {
+        "label": "Python-LICENSE.txt",
+        "path": "LICENSES/Python-LICENSE.txt"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/python/cpython/tree/v3.12.14"
+      ]
+    ]
+  },
+  {
+    "name": "PyInstaller",
+    "version": "6.22.3",
+    "description": "PyInstaller-Mitwirkende – Verpackung und Start der Windows-Anwendung.",
+    "license": "GPL mit Ausnahme für erzeugte Programme",
+    "files": [
+      {
+        "label": "pyinstaller/pyinstaller-6.22.3.dist-info/licenses/COPYING.txt",
+        "path": "LICENSES/pyinstaller/pyinstaller-6.22.3.dist-info/licenses/COPYING.txt"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/pyinstaller/pyinstaller/tree/v6.22.3"
+      ]
+    ]
+  },
+  {
+    "name": "Alle Lizenztexte",
+    "version": "Vollständige mitgelieferte Sammlung",
+    "description": "Enthält auch alternative Lizenzangebote und zusätzliche Hinweise aus den Originalpaketen. Die bei den Komponenten genannte Lizenzoption ist maßgeblich.",
+    "license": "Siehe jeweilige Datei",
+    "files": [
+      {
+        "label": "CC-BY-4.0.txt",
+        "path": "LICENSES/CC-BY-4.0.txt"
+      },
+      {
+        "label": "cffi/cffi-2.1.1.dist-info/licenses/LICENSE",
+        "path": "LICENSES/cffi/cffi-2.1.1.dist-info/licenses/LICENSE"
+      },
+      {
+        "label": "Dictate-MIT.txt",
+        "path": "LICENSES/Dictate-MIT.txt"
+      },
+      {
+        "label": "GPL-3.0.txt",
+        "path": "LICENSES/GPL-3.0.txt"
+      },
+      {
+        "label": "LGPL-3.0.txt",
+        "path": "LICENSES/LGPL-3.0.txt"
+      },
+      {
+        "label": "numpy/numpy/_core/include/numpy/random/LICENSE.txt",
+        "path": "LICENSES/numpy/numpy/_core/include/numpy/random/LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy/ma/LICENSE",
+        "path": "LICENSES/numpy/numpy/ma/LICENSE"
+      },
+      {
+        "label": "numpy/numpy/random/LICENSE.md",
+        "path": "LICENSES/numpy/numpy/random/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/LICENSE.txt",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/include/numpy/libdivide/LICENSE.txt",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/include/numpy/libdivide/LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/common/pythoncapi-compat/COPYING",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/common/pythoncapi-compat/COPYING"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/highway/LICENSE",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/highway/LICENSE"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/multiarray/dragon4_LICENSE.txt",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/multiarray/dragon4_LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/umath/svml/LICENSE",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/_core/src/umath/svml/LICENSE"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/linalg/lapack_lite/LICENSE.txt",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/linalg/lapack_lite/LICENSE.txt"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/ma/LICENSE",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/ma/LICENSE"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/distributions/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/distributions/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/philox/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/philox/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md"
+      },
+      {
+        "label": "numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md",
+        "path": "LICENSES/numpy/numpy-2.5.3.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md"
+      },
+      {
+        "label": "ONNXRuntime-LICENSE.txt",
+        "path": "LICENSES/ONNXRuntime-LICENSE.txt"
+      },
+      {
+        "label": "ONNXRuntime-ThirdPartyNotices.txt",
+        "path": "LICENSES/ONNXRuntime-ThirdPartyNotices.txt"
+      },
+      {
+        "label": "PortAudio-LICENSE.txt",
+        "path": "LICENSES/PortAudio-LICENSE.txt"
+      },
+      {
+        "label": "pycparser/pycparser-3.11.dist-info/licenses/LICENSE",
+        "path": "LICENSES/pycparser/pycparser-3.11.dist-info/licenses/LICENSE"
+      },
+      {
+        "label": "pyinstaller/pyinstaller-6.22.3.dist-info/licenses/COPYING.txt",
+        "path": "LICENSES/pyinstaller/pyinstaller-6.22.3.dist-info/licenses/COPYING.txt"
+      },
+      {
+        "label": "pynput/pynput-1.8.2.dist-info/licenses/COPYING.LGPL",
+        "path": "LICENSES/pynput/pynput-1.8.2.dist-info/licenses/COPYING.LGPL"
+      },
+      {
+        "label": "PySide6-Essentials/pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt",
+        "path": "LICENSES/PySide6-Essentials/pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      },
+      {
+        "label": "Python-LICENSE.txt",
+        "path": "LICENSES/Python-LICENSE.txt"
+      },
+      {
+        "label": "sherpa-onnx/sherpa_onnx-1.13.8.dist-info/licenses/LICENSE",
+        "path": "LICENSES/sherpa-onnx/sherpa_onnx-1.13.8.dist-info/licenses/LICENSE"
+      },
+      {
+        "label": "shiboken6/shiboken6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt",
+        "path": "LICENSES/shiboken6/shiboken6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      },
+      {
+        "label": "six/six-1.17.0.dist-info/LICENSE",
+        "path": "LICENSES/six/six-1.17.0.dist-info/LICENSE"
+      },
+      {
+        "label": "sounddevice/sounddevice-0.5.6.dist-info/licenses/LICENSE",
+        "path": "LICENSES/sounddevice/sounddevice-0.5.6.dist-info/licenses/LICENSE"
+      }
+    ],
+    "links": []
+  },
+  {
+    "name": "OpenSSL · Modelldownloads",
+    "version": "3.5.8",
+    "description": "OpenSSL-Projekt und Mitwirkende. TLS für prüfsummengesicherte Modelldownloads; die lokalen Diktate benötigen keine Internetverbindung.",
+    "license": "Apache-2.0",
+    "files": [
+      {
+        "label": "OpenSSL-3.5.8.txt",
+        "path": "LICENSES/OpenSSL-3.5.8.txt"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode",
+        "https://github.com/openssl/openssl/tree/openssl-3.5.8"
+      ]
+    ]
+  },
+  {
+    "name": "llama.cpp · optionale CPU-Text-KI",
+    "version": "b11669",
+    "description": "ggml-org und Mitwirkende. Unveränderte, separat gestartete Windows-CPU-Laufzeit. Textverarbeitung ausschließlich lokal.",
+    "license": "MIT",
+    "files": [
+      {
+        "label": "llama.cpp-MIT.txt",
+        "path": "LICENSES/llama.cpp-MIT.txt"
+      }
+    ],
+    "links": [
+      [
+        "Quellcode der Laufzeit",
+        "https://github.com/ggml-org/llama.cpp/tree/b11669"
+      ]
+    ]
+  },
+  {
+    "name": "LLVM OpenMP · CPU-Laufzeit",
+    "version": "aus llama.cpp b11669",
+    "description": "LLVM-Projekt und Mitwirkende. OpenMP-Unterstützung der optionalen Windows-CPU-Laufzeit.",
+    "license": "Apache-2.0 WITH LLVM-exception",
+    "files": [
+      {
+        "label": "LLVM-OpenMP.txt",
+        "path": "LICENSES/LLVM-OpenMP.txt"
+      }
+    ],
+    "links": [
+      [
+        "LLVM OpenMP",
+        "https://github.com/llvm/llvm-project/tree/main/openmp"
+      ]
+    ]
+  },
+  {
+    "name": "Qwen · optionale Textmodelle",
+    "version": "Qwen3 1.7B / Qwen3.5 0.8B / Qwen3.5 4B",
+    "description": "Qwen / Alibaba Cloud und Mitwirkende. GGUF-Konvertierungen von Unsloth und ggml-org. Optional separat heruntergeladene, unveränderte Modellgewichte.",
+    "license": "Apache-2.0",
+    "files": [
+      {
+        "label": "Qwen-Apache-2.0.txt",
+        "path": "LICENSES/Qwen-Apache-2.0.txt"
+      }
+    ],
+    "links": [
+      [
+        "Qwen3 1.7B · Q4_K_M · Ausgangsmodell",
+        "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/tree/d7f544eead698dbd1f15126ef60b45a1e1933222"
+      ],
+      [
+        "Qwen3.5 0.8B · Q4_0 · Experimentell",
+        "https://huggingface.co/ggml-org/Qwen3.5-0.8B-GGUF/tree/807dfd9a6fadbf703207aac3bfb0b2b3040d077c"
+      ],
+      [
+        "Qwen3.5 4B · Q4_K_M · Größer",
+        "https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/tree/e87f176479d0855a907a41277aca2f8ee7a09523"
+      ]
+    ]
+  }
+]
